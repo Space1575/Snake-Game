@@ -4,10 +4,8 @@ pygame.display.init()
 pygame.font.init()
 pygame.display.set_caption('Snake Game')
 highscore =0
-icon = pygame.image.load('costume2.png') 
 Screen=[680,680] 
 new = True
-pygame.display.set_icon(icon)
 font = pygame.font.SysFont(' Monospace',70)
 font2 = pygame.font.SysFont(' Mono',30)
 clock = pygame.time.Clock()             
