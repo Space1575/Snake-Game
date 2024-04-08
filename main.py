@@ -31,8 +31,8 @@ def gameover():
         pygame.display.update()
 def Score():
     score_text = font2.render(f'Score:{score}',1,(0,0,0))
-    
     highscore_text = font2.render(f'HScore:{highscore}',1,(0,0,0))
+    
     screen.blit(highscore_text,(350,690))
     screen.blit(score_text,(0,690))
 def SetUP():
@@ -174,5 +174,4 @@ def main():
             pygame.time.delay(500)
             SetUP()
             Game_Over = gameover()
-SetUP()
 main()
