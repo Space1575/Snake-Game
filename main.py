@@ -4,12 +4,14 @@ pygame.display.init()
 pygame.font.init()
 pygame.display.set_caption('Snake Game')
 highscore =0
+icon = pygame.image.load('costume2.png') 
 Screen=[680,680] 
 new = True
+pygame.display.set_icon(icon)
 font = pygame.font.SysFont(' Monospace',70)
 font2 = pygame.font.SysFont(' Mono',30)
 clock = pygame.time.Clock()             
-screen = pygame.display.set_mode((Screen[0],Screen[1]+100))
+screen = pygame.display.set_mode(((Screen[0],Screen[1]+100)))
 font1 = pygame.font.SysFont('Comic Sans',43)
 def gameover():
     time =0
@@ -31,12 +33,13 @@ def gameover():
         pygame.display.update()
 def Score():
     score_text = font2.render(f'Score:{score}',1,(0,0,0))
+    Logo = font2.render(f'\nSnake Game\n',1,(0,0,0))
     highscore_text = font2.render(f'HScore:{highscore}',1,(0,0,0))
-    
     screen.blit(highscore_text,(350,690))
+    screen.blit(Logo,(200,725))
     screen.blit(score_text,(0,690))
 def SetUP():
-    global Game_Over,new,direction,snake,snake_pos,snake_quantaty,t_p,vel,vel_y,snake_tail_list,Screen,tiles,VEL,t_p,apple_pos,border
+    global Game_Over,new,direction,snake,snake_pos,snake_quantaty,t_p,vel,vel_y,snake_tail_list,Screen,tiles,VEL,snake_pos_tail,apple_pos,border
     VEL = 20
     vel = VEL
     vel_y = VEL
@@ -49,7 +52,6 @@ def SetUP():
     apple_pos =[]
     pygame.mouse.set_visible(False)
     tiles=[]
-    snake_tail_list =[]
     snake = pygame.Rect(snake_pos[0],snake_pos[1],VEL,VEL)
     for h in range(Screen[0]//VEL):
         for w in range(Screen[1]//VEL):
@@ -57,8 +59,8 @@ def SetUP():
                 p1 =[VEL*(h),VEL*w]
                 tiles.append(p)
                 apple_pos.append(p1)
-    t_p = []
     border = pygame.Rect(0,740,Screen[0],100)
+    snake_pos_tail=[]
 def main(): 
     global Game_Over,direction,snake,new,snake_quantaty,snake_pos,vel,vel_y,border,highscore,score
     SetUP()
@@ -101,14 +103,14 @@ def main():
                 if snake_pos[0]>Screen[0]:
                     snake_pos[0]=Screen[0]-VEL
                 vel_y=0
-                t_p.clear()
+                snake_pos_tail.clear()
                 Game_Over = True
                 
             if snake.y<0:
                 snake.y=0
                 vel =0
                 vel_y=0 
-                t_p.clear()
+                snake_pos_tail.clear()
                 Game_Over = True
             if new == True:
                 random.shuffle(apple_pos)
@@ -116,15 +118,15 @@ def main():
                     apple = pygame.Rect(p1[0],p1[1],VEL,VEL)
                     new = False
             snake_pos2 = [snake.x,snake.y]
-            t_p.append(snake_pos2)
+            snake_pos_tail.append(snake_pos2)
             pygame.draw.rect(screen,(100,0,0),apple)
             if snake.colliderect(apple):
                 new = True
                 snake_quantaty += 1
             score = snake_quantaty+1
-            if len(t_p)-1 > snake_quantaty:
-                del t_p[0]
-            for x in t_p:
+            if len(snake_pos_tail)-1 > snake_quantaty:
+                del snake_pos_tail[0]
+            for x in snake_pos_tail:
                 pygame.draw.rect(screen,(0,100,0),(x[0],x[1],VEL,VEL))
                 if snake_quantaty >0:
                     if x == snake_pos:
@@ -149,17 +151,15 @@ def main():
                 FPS=26
             if snake_quantaty>=28:
                 FPS=30
-            if snake.y>border.y and snake.colliderect(border):
+            if snake.colliderect(border):
                 snake_pos[1] = border.y-VEL
                 vel =0
                 vel_y =0
-                t_p.clear()
                 Game_Over=True
-            if snake.x>borderleft.x and snake.colliderect(borderleft):
+            if  snake.colliderect(borderleft):
                 snake_pos[0] = border.x-VEL
                 vel =0
                 vel_y =0
-                t_p.clear()
                 Game_Over=True
             snake = pygame.Rect(snake_pos[0],snake_pos[1],VEL,VEL)
             if score>highscore:
